@@ -105,5 +105,5 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## Créditos e Atribuições
 
-Este projeto utiliza a API [VAmPi](https://github.com/erev0s/VAmPI), desenvolvida por <b>erev0s<b>.
+Este projeto utiliza a API [VAmPi](https://github.com/erev0s/VAmPI), desenvolvida por **erev0s**.
 
