@@ -1,10 +1,10 @@
-# VAmPI Lab UI
+# VAmPI Lab
 
 Frontend educacional para demonstração e estudo de vulnerabilidades em APIs REST utilizando o VAmPI (Vulnerable API).
 
 ## Sobre o Projeto
 
-O VAmPI Lab UI é uma interface web criada para facilitar a visualização e compreensão de vulnerabilidades presentes em APIs REST.
+O VAmPI Lab é uma interface web criada para facilitar a visualização e compreensão de vulnerabilidades presentes em APIs REST.
 
 Enquanto o VAmPI original é normalmente utilizado através do Swagger UI ou ferramentas como Postman, este projeto oferece uma interface gráfica que permite demonstrar ataques, analisar requisições e visualizar respostas de forma mais intuitiva e didática.
 
@@ -63,8 +63,8 @@ Visualização e utilização de tokens JWT para acesso a recursos protegidos.
 ### Clonar o repositório
 
 ```bash
-git clone https://github.com/caiocsx/VAmPI-Lab-UI.git
-cd VAmPI-Lab-UI
+git clone https://github.com/caiocsx/VAmPI-Lab.git
+cd VAmPI-Lab
 ```
 
 ### Instalar dependências
