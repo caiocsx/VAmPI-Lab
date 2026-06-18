@@ -1,19 +1,22 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
-import { useState } from "react"
-import { useNavigate } from "react-router"
-import { toast } from "sonner"
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { API_ROUTES } from "@/config/api-routes";
+import { api } from "@/lib/api";
+import { cn } from "@/lib/utils";
+import axios from "axios";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { toast } from "sonner";
 
 interface LoginApiResponseData {
-  auth_token?: string
+  auth_token?: string;
   message: string;
   status: "success" | "fail";
 }
@@ -22,48 +25,51 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.SubmitEvent) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
+
     try {
-      const response = await fetch("http://localhost:5002/users/v1/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          password,
-          username,
-        }),
-      })
+      const response = await api.post(API_ROUTES.auth.login, {
+        username,
+        password,
+      });
 
-      const data: LoginApiResponseData = await response.json()
+      const data: LoginApiResponseData = response.data;
 
-      if (!data.status || data.status !== "success") {
-        toast.error(data.message || "Login failed. Please check your credentials and try again.")
-        return
-      }
-
-      if (data.auth_token) {
-        localStorage.setItem("vampi_token", data.auth_token)
-        toast.success("Login successful!")
-        navigate("/dashboard")
+      if (data.status === "success" && data.auth_token) {
+        localStorage.setItem("vampi_auth_token", data.auth_token);
+        toast.success("Login successful!");
+        navigate("/dashboard");
+      } else {
+        toast.error(
+          data.message || "Login failed. Please check your credentials."
+        );
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "An error occurred. Please try again.")
+      if (axios.isAxiosError(err) && err.response) {
+        const apiMessage = err.response.data?.message;
+        toast.error(apiMessage || "Invalid username or password.");
+      } else {
+        toast.error("Could not connect to the server. Please try again later.");
+      }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className={cn("flex flex-col gap-6", className)} {...props}>
+    <form
+      onSubmit={handleSubmit}
+      className={cn("flex flex-col gap-6", className)}
+      {...props}
+    >
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
           <h1 className="text-2xl font-bold">Login to your account</h1>
@@ -75,7 +81,7 @@ export function LoginForm({
           <FieldLabel htmlFor="username">Username</FieldLabel>
           <Input
             id="username"
-            type="username"
+            type="text"
             placeholder="username123"
             required
             className="bg-background"
@@ -121,19 +127,12 @@ export function LoginForm({
           </Button>
           <FieldDescription className="text-center">
             Don&apos;t have an account?{" "}
-              <a
-                href="/signup"
-                className="underline underline-offset-4"
-                onClick={(e) => {
-                  e.preventDefault()
-                  navigate('/signup')
-                }}
-              >
-                Sign up
-              </a>
+            <Link to="/signup" className="underline underline-offset-4">
+              Sign up
+            </Link>
           </FieldDescription>
         </Field>
       </FieldGroup>
     </form>
-  )
+  );
 }
