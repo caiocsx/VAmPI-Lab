@@ -12,10 +12,10 @@ import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router"; 
+import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 
-interface RegisterApiResponseData {
+interface RegisterResponse {
   message: string;
   status: "success" | "fail";
 }
@@ -36,13 +36,14 @@ export function SignupForm({
     setLoading(true);
 
     try {
-      const response = await api.post(API_ROUTES.auth.signup, {
-        email,
-        username,
-        password,
-      });
-
-      const data: RegisterApiResponseData = response.data;
+      const { data } = await api.post<RegisterResponse>(
+        API_ROUTES.auth.signup,
+        {
+          email,
+          username,
+          password,
+        }
+      );
 
       if (data.status === "success") {
         toast.success("Account created successfully! Please log in.");

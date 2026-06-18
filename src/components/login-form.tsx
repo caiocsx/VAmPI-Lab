@@ -15,7 +15,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 
-interface LoginApiResponseData {
+interface LoginResponse {
   auth_token?: string;
   message: string;
   status: "success" | "fail";
@@ -36,12 +36,10 @@ export function LoginForm({
     setLoading(true);
 
     try {
-      const response = await api.post(API_ROUTES.auth.login, {
+      const { data } = await api.post<LoginResponse>(API_ROUTES.auth.login, {
         username,
         password,
       });
-
-      const data: LoginApiResponseData = response.data;
 
       if (data.status === "success" && data.auth_token) {
         localStorage.setItem("vampi_auth_token", data.auth_token);
