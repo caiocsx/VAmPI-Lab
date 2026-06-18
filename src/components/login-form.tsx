@@ -10,16 +10,11 @@ import { Input } from "@/components/ui/input";
 import { API_ROUTES } from "@/config/api-routes";
 import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import type { LoginResponse } from "@/types/api";
 import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
-
-interface LoginResponse {
-  auth_token?: string;
-  message: string;
-  status: "success" | "fail";
-}
 
 export function LoginForm({
   className,

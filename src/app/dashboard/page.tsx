@@ -12,23 +12,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-interface UserItem {
-  email: string;
-  username: string;
-}
-
-interface BookItem {
-  book_title: string;
-  user: string;
-}
+import type { Book } from "@/types/book";
+import type { User } from "@/types/user";
 
 export function DashboardPage() {
   const [stats, setStats] = useState({
     writersCount: 0,
     booksCount: 0,
-    recentWriters: [] as UserItem[],
-    recentBooks: [] as BookItem[],
+    recentWriters: [] as User[],
+    recentBooks: [] as Book[],
   });
 
   const [loading, setLoading] = useState(true);
@@ -41,8 +33,8 @@ export function DashboardPage() {
         const usersReq = await api.get(API_ROUTES.users.list);
         const booksReq = await api.get(API_ROUTES.books.list);
 
-        const allUsers: UserItem[] = usersReq.data?.users || [];
-        const allBooks: BookItem[] = booksReq.data?.Books || [];
+        const allUsers: User[] = usersReq.data?.users || [];
+        const allBooks: Book[] = booksReq.data?.Books || [];
 
         const latestUsers = [...allUsers].reverse().slice(0, 3);
         const latestBooks = [...allBooks].reverse().slice(0, 3);
