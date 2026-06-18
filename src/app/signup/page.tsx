@@ -1,15 +1,16 @@
 import { SignupForm } from "@/components/signup-form"
+import { Link } from "react-router"
 
 export function SignupPage() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
-        <div className="flex justify-center gap-2 md:justify-start">
-          <a href="#" className="flex items-center gap-2">
-            <img src="/vampi-icon.png" alt="VAmPI Logo" className="h-12 w-12" />
-            <p className="text-lg font-bold">VAmPI-Lab</p>
-          </a>
-        </div>
+        <Link to="/" className="flex items-center gap-2">
+          <img src="/vampi-icon.png" alt="VAmPI Logo" className="h-12 w-12" />
+          <span className="text-lg font-bold tracking-wider text-white">
+            VAmPI <span className="font-light text-neutral-400">Lab</span>
+          </span>
+        </Link>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
             <SignupForm />
