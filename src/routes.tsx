@@ -14,14 +14,23 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePage />,
+    handle: {
+      title: "Home",
+    },
   },
   {
     path: "/login",
     element: <LoginPage />,
+    handle: {
+      title: "Login",
+    },
   },
   {
     path: "/signup",
     element: <SignupPage />,
+    handle: {
+      title: "Signup",
+    },
   },
   {
     element: <ProtectedRoute />,
@@ -32,22 +41,37 @@ export const router = createBrowserRouter([
           {
             path: "/dashboard",
             element: <DashboardPage />,
+            handle: {
+              title: "Dashboard",
+            },
           },
           {
             path: "/books",
             element: <BooksPage />,
+            handle: {
+              title: "Books",
+            },
           },
           {
             path: "/writers",
             element: <WritersPage />,
+            handle: {
+              title: "Writers",
+            },
           },
           {
             path: "/settings",
             element: <SettingsPage />,
+            handle: {
+              title: "Settings",
+            },
           },
           {
             path: "/profile",
             element: <ProfilePage />,
+            handle: {
+              title: "Profile",
+            },
           },
         ],
       },
