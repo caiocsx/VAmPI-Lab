@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,12 +15,11 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import {
-  EllipsisVerticalIcon,
   CircleUserRoundIcon,
-  CreditCardIcon,
-  BellIcon,
+  EllipsisVerticalIcon,
   LogOutIcon,
 } from "lucide-react";
+import { Link } from "react-router";
 
 export function NavUser({
   user,
@@ -28,10 +27,16 @@ export function NavUser({
   user: {
     name: string;
     email: string;
-    avatar: string;
+    admin: boolean;
   };
 }) {
   const { isMobile } = useSidebar();
+
+  const getInitials = (name: string) => {
+    const names = name.split(" ");
+    const initials = names.map((n) => n[0]).join("");
+    return initials.toUpperCase();
+  };
 
   return (
     <SidebarMenu>
@@ -43,8 +48,9 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg grayscale">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  {getInitials(user.name)}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
@@ -64,8 +70,9 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">
+                    {getInitials(user.name)}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>
@@ -78,20 +85,19 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <CircleUserRoundIcon />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCardIcon />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BellIcon />
-                Notifications
+                <Link to="/profile" className="flex items-center gap-1">
+                  <CircleUserRoundIcon />
+                  Profile
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                localStorage.removeItem("vampi_auth_token");
+                window.location.href = "/login";
+              }}
+            >
               <LogOutIcon />
               Log out
             </DropdownMenuItem>

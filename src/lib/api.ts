@@ -19,9 +19,9 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem("vampi_auth_token")
-      window.location.href = "/login"
+      localStorage.removeItem("vampi_auth_token");
+      window.location.href = "/login";
     }
-    return Promise.reject(error)
+    return Promise.reject(error);
   }
-)
+);

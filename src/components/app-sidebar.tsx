@@ -1,177 +1,142 @@
-import * as React from "react";
-
-import { NavDocuments } from "@/components/nav-documents";
-import { NavMain } from "@/components/nav-main";
-import { NavSecondary } from "@/components/nav-secondary";
 import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { API_ROUTES } from "@/config/api-routes";
+import { api } from "@/lib/api";
 import {
-  CameraIcon,
-  ChartBarIcon,
-  CircleHelpIcon,
-  CommandIcon,
-  DatabaseIcon,
-  FileChartColumnIcon,
-  FileIcon,
-  FileTextIcon,
-  FolderIcon,
+  BookIcon,
   LayoutDashboardIcon,
-  ListIcon,
-  SearchIcon,
   Settings2Icon,
   UsersIcon,
 } from "lucide-react";
+import * as React from "react";
+import { Link } from "react-router";
+
+type MeResponse = {
+  status: string;
+  data: {
+    username: string;
+    email: string;
+    admin: boolean;
+  };
+};
 
 const data = {
-  user: {
-    name: "João Silva",
-    email: "joaosilva@gmail.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
+  main: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/dashboard",
       icon: <LayoutDashboardIcon />,
     },
     {
-      title: "Lifecycle",
-      url: "#",
-      icon: <ListIcon />,
+      title: "Books",
+      url: "/books",
+      icon: <BookIcon />,
     },
     {
-      title: "Analytics",
-      url: "#",
-      icon: <ChartBarIcon />,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: <FolderIcon />,
-    },
-    {
-      title: "Team",
-      url: "#",
+      title: "Writers",
+      url: "/writers",
       icon: <UsersIcon />,
     },
   ],
-  navClouds: [
-    {
-      title: "Capture",
-      icon: <CameraIcon />,
-      isActive: true,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Proposal",
-      icon: <FileTextIcon />,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Prompts",
-      icon: <FileTextIcon />,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  navSecondary: [
+  extra: [
     {
       title: "Settings",
-      url: "#",
+      url: "/settings",
       icon: <Settings2Icon />,
-    },
-    {
-      title: "Get Help",
-      url: "#",
-      icon: <CircleHelpIcon />,
-    },
-    {
-      title: "Search",
-      url: "#",
-      icon: <SearchIcon />,
-    },
-  ],
-  documents: [
-    {
-      name: "Data Library",
-      url: "#",
-      icon: <DatabaseIcon />,
-    },
-    {
-      name: "Reports",
-      url: "#",
-      icon: <FileChartColumnIcon />,
-    },
-    {
-      name: "Word Assistant",
-      url: "#",
-      icon: <FileIcon />,
     },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const [user, setUser] = React.useState({
+    name: "Guest",
+    email: "Not authenticated",
+    admin: false,
+  });
+
+  React.useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const { data } = await api.get<MeResponse>(API_ROUTES.auth.me);
+
+        setUser({
+          name: data.data.username,
+          email: data.data.email,
+          admin: data.data.admin,
+        });
+      } catch {
+        setUser({
+          name: "Guest",
+          email: "Not authenticated",
+          admin: false,
+        });
+      }
+    };
+
+    loadUser();
+  }, []);
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:p-1.5!"
-            >
-              <a href="#">
-                <CommandIcon className="size-5!" />
-                <span className="text-base font-semibold">VAmPI.</span>
-              </a>
-            </SidebarMenuButton>
+          <SidebarMenuItem className="flex items-center gap-2 px-2 py-1">
+            <img src="/vampi-icon.png" alt="VAmPI Logo" className="h-8 w-8" />
+            <span className="text-lg font-bold tracking-wider">
+              VAmPI <span className="font-light">Lab</span>
+            </span>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <SidebarGroup>
+          <SidebarGroupContent className="flex flex-col gap-2">
+            <SidebarMenu>
+              {data.main.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton tooltip={item.title} asChild>
+                    <Link to={item.url}>
+                      {item.icon}
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup className="mt-auto">
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {data.extra.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton tooltip={item.title} asChild>
+                    <Link to={item.url}>
+                      {item.icon}
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
+
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );
