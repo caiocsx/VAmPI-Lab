@@ -7,8 +7,8 @@ export function SignupPage() {
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <Link to="/" className="flex items-center gap-2">
           <img src="/vampi-icon.png" alt="VAmPI Logo" className="h-12 w-12" />
-          <span className="text-lg font-bold tracking-wider text-white">
-            VAmPI <span className="font-light text-neutral-400">Lab</span>
+          <span className="text-lg font-bold tracking-wider">
+            VAmPI <span className="font-ligh">Lab</span>
           </span>
         </Link>
         <div className="flex flex-1 items-center justify-center">
