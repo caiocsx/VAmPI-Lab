@@ -1,8 +1,8 @@
-import { createBrowserRouter } from "react-router"
-import { DashboardPage } from "./app/dashboard/page"
-import { HomePage } from "./app/home/page"
-import { LoginPage } from "./app/login/page"
-import { SignupPage } from "./app/signup/page"
+import { DashboardPage } from "@/app/dashboard/page";
+import { HomePage } from "@/app/home/page";
+import { LoginPage } from "@/app/login/page";
+import { SignupPage } from "@/app/signup/page";
+import { createBrowserRouter } from "react-router";
 
 export const router = createBrowserRouter([
   {
@@ -21,4 +21,4 @@ export const router = createBrowserRouter([
     path: "/dashboard",
     element: <DashboardPage />,
   },
-])
+]);

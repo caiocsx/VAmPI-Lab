@@ -1,5 +1,5 @@
-import { LoginForm } from "@/components/login-form"
-import { Link } from "react-router"
+import { LoginForm } from "@/components/login-form";
+import { Link } from "react-router";
 
 export function LoginPage() {
   return (
@@ -25,5 +25,5 @@ export function LoginPage() {
         />
       </div>
     </div>
-  )
+  );
 }

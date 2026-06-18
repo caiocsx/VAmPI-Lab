@@ -1,5 +1,5 @@
-import { SignupForm } from "@/components/signup-form"
-import { Link } from "react-router"
+import { SignupForm } from "@/components/signup-form";
+import { Link } from "react-router";
 
 export function SignupPage() {
   return (
@@ -25,5 +25,5 @@ export function SignupPage() {
         />
       </div>
     </div>
-  )
+  );
 }

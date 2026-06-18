@@ -1,4 +1,4 @@
-import { Link } from "react-router"
+import { Link } from "react-router";
 
 export function HomePage() {
   return (
@@ -334,5 +334,5 @@ export function HomePage() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
