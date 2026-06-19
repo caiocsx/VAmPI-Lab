@@ -110,10 +110,8 @@ export function BooksPage() {
       setLoadingDetails(true);
 
       const { data } = await api.get<BookDetailsResponse>(
-        API_ROUTES.books.details(title)
+        API_ROUTES.books.get(title)
       );
-
-      console.log("Book details response:", data);
 
       setSelectedBook({
         book_title: data.book_title ?? title,
@@ -149,74 +147,90 @@ export function BooksPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-        <div className="space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight">Books</h1>
-          <p className="text-muted-foreground">
-            View all books and manage your own publications.
-          </p>
+      <div className="flex flex-col gap-2">
+        <h1 className="text-3xl font-bold tracking-tight">Books</h1>
+        <p className="text-muted-foreground">
+          View all books and manage your own publications.
+        </p>
+      </div>
+
+      <div className="rounded-xl border bg-card p-6 shadow-sm transition-all hover:shadow-md">
+        <div className="flex items-center justify-between">
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-muted-foreground">
+              Total Books Cataloged
+            </p>
+            <h3 className="text-3xl font-bold tracking-tight">
+              {allBooks.length}
+            </h3>
+          </div>
+          <div className="rounded-lg bg-primary/10 p-3 text-primary">
+            <BookOpen className="h-5 w-5" />
+          </div>
         </div>
-
-        <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" />
-              Create book
-            </Button>
-          </DialogTrigger>
-
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create new book</DialogTitle>
-              <DialogDescription>
-                Add a title and a secret content for the book.
-              </DialogDescription>
-            </DialogHeader>
-
-            <form className="space-y-4" onSubmit={handleCreateBook}>
-              <div className="space-y-2">
-                <Label htmlFor="book_title">Book title</Label>
-                <Input
-                  id="book_title"
-                  value={bookTitle}
-                  onChange={(e) => setBookTitle(e.target.value)}
-                  placeholder="book99"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="secret">Secret</Label>
-                <Input
-                  id="secret"
-                  type="password"
-                  value={secret}
-                  onChange={(e) => setSecret(e.target.value)}
-                  placeholder="pass1secret"
-                />
-              </div>
-
-              <div className="flex justify-end gap-2">
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() => setCreateOpen(false)}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit" disabled={creating}>
-                  {creating ? "Creating..." : "Create"}
-                </Button>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
       </div>
 
       <Tabs defaultValue="all" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="all">All books</TabsTrigger>
-          <TabsTrigger value="mine">My books</TabsTrigger>
-        </TabsList>
+        <div className="flex items-center justify-between">
+          <TabsList>
+            <TabsTrigger value="all">All books</TabsTrigger>
+            <TabsTrigger value="mine">My books</TabsTrigger>
+          </TabsList>
+
+          <Dialog open={createOpen} onOpenChange={setCreateOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="mr-2 h-4 w-4" />
+                Create book
+              </Button>
+            </DialogTrigger>
+
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Create new book</DialogTitle>
+                <DialogDescription>
+                  Add a title and a secret content for the book.
+                </DialogDescription>
+              </DialogHeader>
+
+              <form className="space-y-4" onSubmit={handleCreateBook}>
+                <div className="space-y-2">
+                  <Label htmlFor="book_title">Book title</Label>
+                  <Input
+                    id="book_title"
+                    value={bookTitle}
+                    onChange={(e) => setBookTitle(e.target.value)}
+                    placeholder="book99"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="secret">Secret</Label>
+                  <Input
+                    id="secret"
+                    type="password"
+                    value={secret}
+                    onChange={(e) => setSecret(e.target.value)}
+                    placeholder="pass1secret"
+                  />
+                </div>
+
+                <div className="flex justify-end gap-2">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setCreateOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" disabled={creating}>
+                    {creating ? "Creating..." : "Create"}
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
 
         <TabsContent value="all">
           <div className="rounded-xl border bg-card shadow-sm">
