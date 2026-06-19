@@ -11,11 +11,12 @@ export const API_ROUTES = {
     updateEmail: (username: string) => `${API_BASE}/users/v1/${username}/email`,
     updatePassword: (username: string) =>
       `${API_BASE}/users/v1/${username}/password`,
+    get: (username: string) => `${API_BASE}/users/v1/${username}`,
   },
   books: {
     list: `${API_BASE}/books/v1`,
     create: `${API_BASE}/books/v1`,
-    details: (title: string) =>
+    get: (title: string) =>
       `${API_BASE}/books/v1/${encodeURIComponent(title)}`,
   },
 } as const;
