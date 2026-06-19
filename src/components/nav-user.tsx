@@ -85,7 +85,10 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <Link to="/profile" className="flex items-center gap-1">
+                <Link
+                  to="/profile"
+                  className="flex cursor-pointer items-center gap-1"
+                >
                   <CircleUserRoundIcon />
                   Profile
                 </Link>
@@ -97,6 +100,7 @@ export function NavUser({
                 localStorage.removeItem("vampi_auth_token");
                 window.location.href = "/login";
               }}
+              className="flex cursor-pointer items-center gap-1"
             >
               <LogOutIcon />
               Log out
