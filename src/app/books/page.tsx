@@ -252,7 +252,6 @@ export function BooksPage() {
                   <TableRow>
                     <TableHead>Book Title</TableHead>
                     <TableHead>Owner / Publisher</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -264,17 +263,6 @@ export function BooksPage() {
                         </TableCell>
                         <TableCell className="text-muted-foreground">
                           {book.user}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleViewSecret(book.book_title)}
-                            disabled={loadingDetails}
-                          >
-                            <Eye className="mr-2 h-4 w-4" />
-                            View secret
-                          </Button>
                         </TableCell>
                       </TableRow>
                     ))
