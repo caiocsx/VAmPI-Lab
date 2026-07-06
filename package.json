@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "password-forcer": "node ./password-forcer/force-password-worker.js"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
