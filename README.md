@@ -10,100 +10,132 @@ Enquanto o VAmPI original é normalmente utilizado através do Swagger UI ou fer
 
 O objetivo é auxiliar em atividades acadêmicas, treinamentos de segurança ofensiva e defensiva, laboratórios de testes e apresentações educacionais.
 
-## Objetivos
+## Material do Seminário
 
-* Facilitar o aprendizado sobre segurança em APIs REST.
-* Demonstrar vulnerabilidades de forma visual.
-* Exibir requisições e respostas em tempo real.
-* Servir como apoio para aulas, seminários e laboratórios.
-* Permitir a exploração controlada de falhas conhecidas do VAmPI.
+A apresentação utilizada durante o seminário está disponível no repositório:
 
-## Tecnologias
+- 📄 https://canva.link/op0kilvt191ormb
 
-### Frontend
 
-* React
-* TypeScript
-* Vite
-* Shadcn UI
-* Tailwind CSS
+## Vulnerabilidades
 
-### Backend
+- Unauthorized Password Change
+- Broken Object Level Authorization (BOLA)
+- Mass Assignment
+- Excessive Data Exposure
+- Falta de Rate Limiting
 
-* VAmPI (Vulnerable API)
+# Preparando o Ambiente
 
-## Funcionalidades
-
-### Autenticação
-
-* Cadastro de usuários
-* Login
-* Informações do usuário autenticado
-
-### Exploração de Vulnerabilidades
-
-#### Broken Access Control
-
-Demonstração de escalada vertical de privilégios através da criação de usuários com permissões administrativas.
-
-#### User Enumeration
-
-Identificação de usuários válidos através de mensagens de erro distintas durante o processo de autenticação.
-
-#### SQL Injection
-
-Demonstração de consultas vulneráveis utilizando entradas manipuladas pelo usuário.
-
-#### JWT Analysis
-
-Visualização e utilização de tokens JWT para acesso a recursos protegidos.
-
-## Executando o Projeto
-
-### Clonar o repositório
+## 1. Clone este repositório, instale as dependências e execute
 
 ```bash
 git clone https://github.com/caiocsx/VAmPI-Lab.git
 cd VAmPI-Lab
 ```
-
-### Instalar dependências
-
 ```bash
 npm install
 ```
-
-### Executar em modo desenvolvimento
-
 ```bash
 npm run dev
 ```
+A aplicação ficará disponível em:
 
-## Executando o VAmPI
+```text
+http://localhost:5173
+```
 
+## 2. Clone o projeto original do VAmPI e suba o container
+
+```bash
+git clone https://github.com/erev0s/VAmPI.git
+cd VAmPI
+```
 ```bash
 docker compose up -d
 ```
-
-A API vulnerável ficará disponível em:
+A API ficará disponível em:
 
 ```text
 http://localhost:5002
 ```
 
-## Aviso de Segurança
+## 3. Popular o banco de dados
 
-Este projeto possui finalidade exclusivamente educacional.
+Abra a documentação Swagger da API:
 
-As vulnerabilidades demonstradas são intencionais e devem ser utilizadas apenas em ambientes controlados de laboratório.
+```text
+http://localhost:5002/ui
+```
 
-Nunca utilize técnicas apresentadas neste projeto contra sistemas sem autorização explícita.
+Execute a requisição responsável por popular o banco de dados.
 
-## Licença
+Esse passo cria os usuários, livros e demais dados necessários para as demonstrações.
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+# Vulnerabilidades Demonstradas
 
-## Créditos e Atribuições
+## 1. Unauthorized Password Change
 
-Este projeto utiliza a API [VAmPi](https://github.com/erev0s/VAmPI), desenvolvida por **erev0s**.
+### Descrição
 
+A rota de alteração de senha utiliza o **username** enviado na URL para identificar qual usuário terá a senha alterada, sem verificar se ele corresponde ao usuário autenticado.
+
+Dessa forma, basta alterar o username na requisição para redefinir a senha de qualquer outro usuário conhecido.
+
+## 2. Broken Object Level Authorization (BOLA)
+
+### Descrição
+
+Ao visualizar um livro, o frontend envia uma requisição para buscar seus detalhes. Como o backend não verifica se o livro pertence ao usuário autenticado, basta alterar o identificador do recurso na requisição para acessar informações de livros pertencentes a outros usuários.
+
+## 3. Mass Assignment
+
+### Descrição
+
+Durante o cadastro, a API aceita campos enviados pelo cliente sem validar quais propriedades podem ser definidas.
+
+Assim, um atacante pode incluir campos como:
+
+```json
+{
+    "admin": true
+}
+```
+
+ou testar outras variações (`is_admin`, `isAdmin`, etc.) até encontrar um atributo aceito, criando uma conta com privilégios administrativos.
+
+## 4. Excessive Data Exposure
+
+### Descrição
+
+Algumas rotas retornam mais informações do que o necessário para o funcionamento da aplicação.
+
+Entre os exemplos estão a listagem de usuários, que expõe usernames e e-mails, e a rota de debug disponível pelo Swagger, que revela informações internas da API. Esses dados podem ser utilizados para facilitar outros ataques.
+
+## 5. Falta de Rate Limiting
+
+### Descrição
+
+As rotas de autenticação não possuem limitação de requisições, permitindo um número ilimitado de tentativas de login.
+
+Na pasta `password-forcer/` há um script JavaScript e uma lista de senhas que demonstram como um ataque de força bruta pode ser realizado até encontrar a senha correta de um usuário.
+
+```bash
+npm run password-forcer
+```
+
+# Aviso de Segurança
+
+Este projeto possui finalidade **exclusivamente educacional**.
+
+Todas as vulnerabilidades demonstradas são intencionais e devem ser utilizadas apenas em ambientes controlados de laboratório.
+
+Nunca utilize as técnicas apresentadas neste projeto contra sistemas sem autorização explícita.
+
+# Licença
+
+Este projeto está sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais informações.
+
+# Créditos
+
+Este projeto utiliza a API vulnerável [VAmPi](https://github.com/erev0s/VAmPI), desenvolvida por **erev0s**:
